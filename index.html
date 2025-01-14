@@ -29,8 +29,9 @@
             font-size: 1.5rem;
             border-radius: 8px;
         }
-        .btn-clear, .btn-equal {
-            background-color: #e1e1e1;
+        .btn-clear {
+            background-color: #dc3545; /* Red color for delete */
+            color: white;
         }
         .btn-equal {
             background-color: #007bff;
@@ -66,7 +67,7 @@
 
                     <button type="button" class="btn btn-outline-secondary btn-custom" data-value="0">0</button>
                     <button type="button" class="btn btn-outline-secondary btn-custom" data-value=".">.</button>
-                    <button type="button" class="btn btn-clear btn-custom"><i class="bi bi-x-circle"></i></button>
+                    <button type="button" class="btn btn-clear btn-custom"><i class="bi bi-backspace"></i></button>
                     <button type="button" class="btn btn-outline-secondary btn-custom" data-value="+">+</button>
                 </div>
                 <button class="btn btn-equal w-100 mt-3 btn-custom"><i class="bi bi-equals"></i></button>
@@ -103,9 +104,16 @@
                 $('#result').removeClass('d-none').text(`Hasil: ${result}`);
             });
 
-            // Fungsi untuk menghapus input
+            // Fungsi untuk menghapus satu karakter
             $('.btn-clear').on('click', function() {
-                expressionInput.val('0');
+                let currentVal = expressionInput.val();
+                // Menghapus karakter terakhir
+                currentVal = currentVal.slice(0, -1);
+                if (currentVal === '') {
+                    expressionInput.val('0');
+                } else {
+                    expressionInput.val(currentVal);
+                }
                 $('#result').addClass('d-none').text('');
             });
         });
