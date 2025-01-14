@@ -15,21 +15,8 @@
             <div class="card-body">
                 <form id="calculator-form">
                     <div class="mb-3">
-                        <label for="num1" class="form-label">Angka 1</label>
-                        <input type="number" class="form-control" id="num1" placeholder="Masukkan angka pertama" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="operator" class="form-label">Operator</label>
-                        <select id="operator" class="form-select">
-                            <option value="+">Tambah (+)</option>
-                            <option value="-">Kurang (-)</option>
-                            <option value="*">Kali (×)</option>
-                            <option value="/">Bagi (÷)</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="num2" class="form-label">Angka 2</label>
-                        <input type="number" class="form-control" id="num2" placeholder="Masukkan angka kedua" required>
+                        <label for="expression" class="form-label">Ekspresi Matematika</label>
+                        <input type="text" class="form-control" id="expression" placeholder="Masukkan ekspresi (contoh: 2+4-1/4*1)" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Hitung</button>
                 </form>
@@ -46,31 +33,20 @@
                 // Mencegah perilaku default dari formulir (refresh halaman)
                 event.preventDefault();
 
-                // Mengambil nilai angka pertama
-                const num1 = parseFloat($('#num1').val());
-                // Mengambil nilai operator yang dipilih
-                const operator = $('#operator').val();
-                // Mengambil nilai angka kedua
-                const num2 = parseFloat($('#num2').val());
-                let result; // Variabel untuk menyimpan hasil perhitungan
+                // Mengambil ekspresi matematika dari input
+                const expression = $('#expression').val();
+                let result;
 
-                // Memeriksa operator yang dipilih dan melakukan operasi
-                switch (operator) {
-                    case '+':
-                        result = num1 + num2; // Penjumlahan
-                        break;
-                    case '-':
-                        result = num1 - num2; // Pengurangan
-                        break;
-                    case '*':
-                        result = num1 * num2; // Perkalian
-                        break;
-                    case '/':
-                        // Pembagian dengan pengecekan agar tidak membagi dengan 0
-                        result = num2 !== 0 ? num1 / num2 : 'Tidak bisa membagi dengan 0';
-                        break;
-                    default:
-                        result = 'Operator tidak valid'; // Pesan error jika operator tidak dikenali
+                try {
+                    // Menggunakan fungsi eval untuk mengevaluasi ekspresi matematika
+                    // Mengganti tanda ":" dengan "/" untuk pembagian
+                    const sanitizedExpression = expression.replace(/:/g, '/');
+
+                    // Mengevaluasi ekspresi
+                    result = eval(sanitizedExpression);
+                } catch (error) {
+                    // Menangani kesalahan jika ekspresi tidak valid
+                    result = 'Ekspresi tidak valid';
                 }
 
                 // Menampilkan hasil pada elemen dengan id "result"
