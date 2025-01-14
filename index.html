@@ -5,81 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalkulator Sederhana</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-        }
-        .calculator {
-            display: inline-block;
-            padding: 20px;
-            border: 2px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        input[type="number"] {
-            width: 100px;
-            padding: 5px;
-            margin: 5px;
-        }
-        select, button {
-            padding: 5px;
-            margin: 5px;
-        }
-        .result {
-            margin-top: 20px;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-<body>
-    <h1>Kalkulator Sederhana</h1>
-    <div class="calculator">
-        <form id="calculator-form">
-            <input type="number" id="num1" placeholder="Angka 1" required>
-            <select id="operator">
-                <option value="+">+</option>
-                <option value="-">-</option>
-                <option value="*">×</option>
-                <option value="/">÷</option>
-            </select>
-            <input type="number" id="num2" placeholder="Angka 2" required>
-            <br>
-            <button type="submit">Hitung</button>
-        </form>
-        <div class="result" id="result"></div>
+<body class="bg-light">
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Kalkulator Sederhana</h1>
+        <div class="card mx-auto shadow-sm" style="max-width: 400px;">
+            <div class="card-body">
+                <form id="calculator-form">
+                    <div class="mb-3">
+                        <label for="num1" class="form-label">Angka 1</label>
+                        <input type="number" class="form-control" id="num1" placeholder="Masukkan angka pertama" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="operator" class="form-label">Operator</label>
+                        <select id="operator" class="form-select">
+                            <option value="+">Tambah (+)</option>
+                            <option value="-">Kurang (-)</option>
+                            <option value="*">Kali (×)</option>
+                            <option value="/">Bagi (÷)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="num2" class="form-label">Angka 2</label>
+                        <input type="number" class="form-control" id="num2" placeholder="Masukkan angka kedua" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Hitung</button>
+                </form>
+                <div class="alert alert-info mt-4 d-none" id="result"></div>
+            </div>
+        </div>
     </div>
 
     <script>
+        // Menunggu hingga dokumen selesai dimuat
         $(document).ready(function() {
+            // Menangkap event submit pada formulir
             $('#calculator-form').on('submit', function(event) {
+                // Mencegah perilaku default dari formulir (refresh halaman)
                 event.preventDefault();
 
+                // Mengambil nilai angka pertama
                 const num1 = parseFloat($('#num1').val());
+                // Mengambil nilai operator yang dipilih
                 const operator = $('#operator').val();
+                // Mengambil nilai angka kedua
                 const num2 = parseFloat($('#num2').val());
-                let result;
+                let result; // Variabel untuk menyimpan hasil perhitungan
 
+                // Memeriksa operator yang dipilih dan melakukan operasi
                 switch (operator) {
                     case '+':
-                        result = num1 + num2;
+                        result = num1 + num2; // Penjumlahan
                         break;
                     case '-':
-                        result = num1 - num2;
+                        result = num1 - num2; // Pengurangan
                         break;
                     case '*':
-                        result = num1 * num2;
+                        result = num1 * num2; // Perkalian
                         break;
                     case '/':
+                        // Pembagian dengan pengecekan agar tidak membagi dengan 0
                         result = num2 !== 0 ? num1 / num2 : 'Tidak bisa membagi dengan 0';
                         break;
                     default:
-                        result = 'Operator tidak valid';
+                        result = 'Operator tidak valid'; // Pesan error jika operator tidak dikenali
                 }
 
-                $('#result').text(`Hasil: ${result}`);
+                // Menampilkan hasil pada elemen dengan id "result"
+                $('#result').removeClass('d-none').text(`Hasil: ${result}`);
             });
         });
     </script>
