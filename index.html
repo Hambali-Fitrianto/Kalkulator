@@ -15,8 +15,8 @@
             <div class="card-body">
                 <form id="calculator-form">
                     <div class="mb-3">
-                        <label for="expression" class="form-label">Ekspresi Matematika</label>
-                        <input type="text" class="form-control" id="expression" placeholder="Masukkan ekspresi (contoh: 2+4-1/4*1)" required>
+                        <label for="expression" class="form-label">Perhitungan Matematika</label>
+                        <input type="text" class="form-control" id="expression" placeholder="Masukkan perhitungan (contoh: 2+4-1:4x1)" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Hitung</button>
                 </form>
@@ -33,20 +33,21 @@
                 // Mencegah perilaku default dari formulir (refresh halaman)
                 event.preventDefault();
 
-                // Mengambil ekspresi matematika dari input
+                // Mengambil perhitungan matematika dari input
                 const expression = $('#expression').val();
                 let result;
 
                 try {
-                    // Menggunakan fungsi eval untuk mengevaluasi ekspresi matematika
+                    // Menggunakan fungsi eval untuk mengevaluasi perhitungan matematika
                     // Mengganti tanda ":" dengan "/" untuk pembagian
-                    const sanitizedExpression = expression.replace(/:/g, '/');
+                    // Mengganti tanda "x" dengan "*" untuk perkalian
+                    const sanitizedExpression = expression.replace(/:/g, '/').replace(/x/g, '*');
 
-                    // Mengevaluasi ekspresi
+                    // Mengevaluasi perhitungan
                     result = eval(sanitizedExpression);
                 } catch (error) {
-                    // Menangani kesalahan jika ekspresi tidak valid
-                    result = 'Ekspresi tidak valid';
+                    // Menangani kesalahan jika perhitungan tidak valid
+                    result = 'Perhitungan tidak valid';
                 }
 
                 // Menampilkan hasil pada elemen dengan id "result"
