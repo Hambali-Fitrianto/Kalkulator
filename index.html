@@ -16,7 +16,13 @@
                 <form id="calculator-form">
                     <div class="mb-3">
                         <label for="expression" class="form-label">Perhitungan Matematika</label>
-                        <input type="text" class="form-control" id="expression" placeholder="Masukkan perhitungan (contoh: 2+4-1:4x1)" required>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="expression" placeholder="Masukkan angka" required>
+                            <button type="button" class="btn btn-outline-secondary" id="add">+</button>
+                            <button type="button" class="btn btn-outline-secondary" id="subtract">-</button>
+                            <button type="button" class="btn btn-outline-secondary" id="multiply">×</button>
+                            <button type="button" class="btn btn-outline-secondary" id="divide">÷</button>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Hitung</button>
                 </form>
@@ -28,6 +34,29 @@
     <script>
         // Menunggu hingga dokumen selesai dimuat
         $(document).ready(function() {
+            // Fungsi untuk menambahkan operator ke input
+            function appendOperator(operator) {
+                const expressionInput = $('#expression');
+                expressionInput.val(expressionInput.val() + operator);
+            }
+
+            // Menambahkan operator saat tombol diklik
+            $('#add').on('click', function() {
+                appendOperator('+');
+            });
+
+            $('#subtract').on('click', function() {
+                appendOperator('-');
+            });
+
+            $('#multiply').on('click', function() {
+                appendOperator('*');
+            });
+
+            $('#divide').on('click', function() {
+                appendOperator('/');
+            });
+
             // Menangkap event submit pada formulir
             $('#calculator-form').on('submit', function(event) {
                 // Mencegah perilaku default dari formulir (refresh halaman)
@@ -38,13 +67,8 @@
                 let result;
 
                 try {
-                    // Menggunakan fungsi eval untuk mengevaluasi perhitungan matematika
-                    // Mengganti tanda ":" dengan "/" untuk pembagian
-                    // Mengganti tanda "x" dengan "*" untuk perkalian
-                    const sanitizedExpression = expression.replace(/:/g, '/').replace(/x/g, '*');
-
                     // Mengevaluasi perhitungan
-                    result = eval(sanitizedExpression);
+                    result = eval(expression);
                 } catch (error) {
                     // Menangani kesalahan jika perhitungan tidak valid
                     result = 'Perhitungan tidak valid';
