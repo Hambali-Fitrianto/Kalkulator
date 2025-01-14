@@ -95,10 +95,17 @@
                 const expression = expressionInput.val();
                 let result;
 
-                try {
-                    result = eval(expression);  // Hati-hati, eval bisa berisiko jika ekspresi berbahaya
-                } catch (error) {
-                    result = 'Perhitungan tidak valid';
+                // Pengecekan ekspresi yang valid
+                if (/[^0-9+\-*/(). ]/.test(expression)) {
+                    result = 'Ekspresi tidak valid';
+                } else if (expression === '') {
+                    result = 'Ekspresi kosong';
+                } else {
+                    try {
+                        result = Function('return ' + expression)(); // Menggunakan Function untuk evaluasi yang lebih aman
+                    } catch (error) {
+                        result = 'Perhitungan tidak valid';
+                    }
                 }
 
                 $('#result').removeClass('d-none').text(`Hasil: ${result}`);
@@ -107,12 +114,19 @@
             // Fungsi untuk menghapus satu karakter
             $('.btn-clear').on('click', function() {
                 let currentVal = expressionInput.val();
-                // Menghapus karakter terakhir
-                if (currentVal.length > 1) {
-                    currentVal = currentVal.slice(0, -1);
-                } else {
-                    currentVal = '0';  // Jika hanya ada 1 karakter, set ke 0
+                // Jika ekspresi hanya ada angka 0, set ke 0
+                if (currentVal === '0') {
+                    return;
                 }
+
+                // Menghapus karakter terakhir
+                currentVal = currentVal.slice(0, -1);
+
+                // Jika ekspresi kosong, set ke 0
+                if (currentVal === '') {
+                    currentVal = '0';
+                }
+                
                 expressionInput.val(currentVal);
                 $('#result').addClass('d-none').text('');
             });
