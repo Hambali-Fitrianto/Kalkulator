@@ -7,75 +7,84 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .calculator-buttons button {
+            width: 25%;
+            height: 70px;
+            font-size: 1.5rem;
+        }
+        #expression {
+            text-align: right;
+            font-size: 1.5rem;
+            height: 70px;
+        }
+    </style>
 </head>
 <body class="bg-light">
     <div class="container py-5">
         <h1 class="text-center mb-4">Kalkulator Sederhana</h1>
         <div class="card mx-auto shadow-sm" style="max-width: 400px;">
             <div class="card-body">
-                <form id="calculator-form">
-                    <div class="mb-3">
-                        <label for="expression" class="form-label">Perhitungan Matematika</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="expression" placeholder="Masukkan angka" required>
-                            <button type="button" class="btn btn-outline-secondary" id="add">+</button>
-                            <button type="button" class="btn btn-outline-secondary" id="subtract">-</button>
-                            <button type="button" class="btn btn-outline-secondary" id="multiply">×</button>
-                            <button type="button" class="btn btn-outline-secondary" id="divide">÷</button>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Hitung</button>
-                </form>
+                <input type="text" class="form-control mb-3" id="expression" placeholder="0" readonly>
+                <div class="calculator-buttons d-flex flex-wrap">
+                    <button type="button" class="btn btn-outline-secondary" data-value="7">7</button>
+                    <button type="button" class="btn btn-outline-secondary" data-value="8">8</button>
+                    <button type="button" class="btn btn-outline-secondary" data-value="9">9</button>
+                    <button type="button" class="btn btn-outline-secondary" data-value="/">÷</button>
+
+                    <button type="button" class="btn btn-outline-secondary" data-value="4">4</button>
+                    <button type="button" class="btn btn-outline-secondary" data-value="5">5</button>
+                    <button type="button" class="btn btn-outline-secondary" data-value="6">6</button>
+                    <button type="button" class="btn btn-outline-secondary" data-value="*">×</button>
+
+                    <button type="button" class="btn btn-outline-secondary" data-value="1">1</button>
+                    <button type="button" class="btn btn-outline-secondary" data-value="2">2</button>
+                    <button type="button" class="btn btn-outline-secondary" data-value="3">3</button>
+                    <button type="button" class="btn btn-outline-secondary" data-value="-">-</button>
+
+                    <button type="button" class="btn btn-outline-secondary" data-value="0">0</button>
+                    <button type="button" class="btn btn-outline-secondary" data-value=".">.</button>
+                    <button type="button" class="btn btn-danger" id="clear">C</button>
+                    <button type="button" class="btn btn-outline-secondary" data-value="+">+</button>
+                </div>
+                <button class="btn btn-primary w-100 mt-3" id="calculate">=</button>
                 <div class="alert alert-info mt-4 d-none" id="result"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // Menunggu hingga dokumen selesai dimuat
         $(document).ready(function() {
-            // Fungsi untuk menambahkan operator ke input
-            function appendOperator(operator) {
-                const expressionInput = $('#expression');
-                expressionInput.val(expressionInput.val() + operator);
-            }
+            const expressionInput = $('#expression');
 
-            // Menambahkan operator saat tombol diklik
-            $('#add').on('click', function() {
-                appendOperator('+');
+            // Fungsi untuk menambahkan nilai ke input
+            $('.calculator-buttons button').on('click', function() {
+                const value = $(this).data('value');
+                if (expressionInput.val() === '0') {
+                    expressionInput.val(value);
+                } else {
+                    expressionInput.val(expressionInput.val() + value);
+                }
             });
 
-            $('#subtract').on('click', function() {
-                appendOperator('-');
-            });
-
-            $('#multiply').on('click', function() {
-                appendOperator('*');
-            });
-
-            $('#divide').on('click', function() {
-                appendOperator('/');
-            });
-
-            // Menangkap event submit pada formulir
-            $('#calculator-form').on('submit', function(event) {
-                // Mencegah perilaku default dari formulir (refresh halaman)
-                event.preventDefault();
-
-                // Mengambil perhitungan matematika dari input
-                const expression = $('#expression').val();
+            // Fungsi untuk menghitung hasil
+            $('#calculate').on('click', function() {
+                const expression = expressionInput.val();
                 let result;
 
                 try {
-                    // Mengevaluasi perhitungan
                     result = eval(expression);
                 } catch (error) {
-                    // Menangani kesalahan jika perhitungan tidak valid
                     result = 'Perhitungan tidak valid';
                 }
 
-                // Menampilkan hasil pada elemen dengan id "result"
                 $('#result').removeClass('d-none').text(`Hasil: ${result}`);
+            });
+
+            // Fungsi untuk menghapus input
+            $('#clear').on('click', function() {
+                expressionInput.val('0');
+                $('#result').addClass('d-none').text('');
             });
         });
     </script>
